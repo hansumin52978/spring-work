@@ -34,7 +34,7 @@ public class Score {
 	public Score(ScoreRequestDTO dto) {
 		this.stuName = dto.getName();
 		changeScore(dto);
-	}
+	} //생성자
 	
 	 public void changeScore(ScoreRequestDTO dto) {
 	        this.kor = dto.getKor();
