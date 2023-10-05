@@ -23,10 +23,10 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Score {
 	
+	private int stuNum; //학번
 	private String stuName; //학생 이름
 	private int kor, eng, math; // 국, 영, 수 점수
 	
-	private int stuNum; //학번
 	private int total; //총점
 	private double average; //평균
 	private Grade grade; //학점
@@ -34,11 +34,7 @@ public class Score {
 	public Score(ScoreRequestDTO dto) {
 		this.stuName = dto.getName();
 		changeScore(dto);
-<<<<<<< HEAD
 	} //생성자
-=======
-	}
->>>>>>> 7007729f5771bee9b5b893440081be3a14bfc07b
 	
 	 public void changeScore(ScoreRequestDTO dto) {
 	        this.kor = dto.getKor();
