@@ -10,7 +10,7 @@ public interface IBoardMapper {
 	void insertArticle(Board board);
 	
 	//게시글 목록
-	List<Board> getArticle();
+	List<Board> getArticles();
 	
 	//게시글 상세
 	Board getArticle(int bno);
