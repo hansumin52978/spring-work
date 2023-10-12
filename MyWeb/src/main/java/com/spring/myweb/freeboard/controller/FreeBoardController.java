@@ -3,6 +3,7 @@ package com.spring.myweb.freeboard.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -37,6 +38,12 @@ public class FreeBoardController {
 	public String regist(FreeRegistRequestDTO dto) {
 		service.regist(dto);
 		return "redirect:/freeboard/freeList";
+	}
+	
+	//글 수정 페이지 이동 요청
+	@PostMapping("/modPage")
+	public String modPage(@ModelAttribute("article") FreeModifyRequestDTO dto) {
+		return "freeboard/freeModify";
 	}
 	
 	//글 상세보기
