@@ -87,15 +87,13 @@ public class FreeBoardMapperTest {
 	@Test
 	@DisplayName("글 번호가 1번인 글의 재목과 내용을 수정 후 다시 조회했을 때"
 			+ "제목은 '민지'일 것이고, "
-			+ "작성자는 '는 그런거 몰루', "
 			+ "내용은 '테스트 중이니까 조용히 해라잇!' 일 것이다.")
 	void updateTest() {
 		
 		//given
 		FreeBoard board = FreeBoard.builder()
-				.bno(1)
+				.bno(13)
 				.title("민지")
-				.writer("는 그런거 몰루")
 				.content("테스트 중이니까 조용히 해라잇!")
 				.build(); 
 				
@@ -105,7 +103,6 @@ public class FreeBoardMapperTest {
 		//then
 		FreeBoard b = mapper.getContent(board.getBno()); //DB에서 조회결과 얻어오기.
 		assertEquals(board.getTitle(), b.getTitle());
-		assertEquals(board.getWriter(), b.getWriter());
 		assertEquals(board.getContent(), b.getContent());
 		
 	}

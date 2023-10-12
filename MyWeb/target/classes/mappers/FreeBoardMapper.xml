@@ -21,8 +21,7 @@
 	
 	<update id="update">
 		UPDATE freeboard
-		SET writer = #{writer}, 
-		title = #{title},
+		SET title = #{title},
 		content = #{content},
 		update_date = sysdate
 		WHERE bno = #{bno}

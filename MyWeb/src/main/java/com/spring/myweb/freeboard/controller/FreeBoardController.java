@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.spring.myweb.freeboard.dto.FreeModifyRequestDTO;
 import com.spring.myweb.freeboard.dto.FreeRegistRequestDTO;
+import com.spring.myweb.freeboard.entity.FreeBoard;
 import com.spring.myweb.freeboard.service.IFreeBoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,11 +28,37 @@ public class FreeBoardController {
 		model.addAttribute("boardList", service.getList());
 	}
 	
+	//글쓰기 페이지를 열어주는 메서드
+	@GetMapping("/freeRegist")
+	public void regist() {}
+	
 	//글 등록 처리
 	@PostMapping("/freeRegist")
 	public String regist(FreeRegistRequestDTO dto) {
 		service.regist(dto);
 		return "redirect:/freeboard/freeList";
 	}
-
+	
+	//글 상세보기
+	@GetMapping("/content")
+	public String content(int bno, Model model) {
+		model.addAttribute("article", service.getContent(bno));
+		return "freeboard/freeDetail";
+	}
+	
+	//글 수정하기
+	@PostMapping("/modify")
+	public String modify(FreeModifyRequestDTO dto) {
+		System.out.println("/freeboard/modify: POST");
+		service.update(dto);
+		return "redirect:/freeboard/content?bno=" + dto.getBno();
+	}
+	
+	//글 삭제하기
+	@PostMapping("/delete")
+	public String delete(int bno) {
+		System.out.println("/freeboard/delete: POST");
+		service.delete(bno);
+		return "redirect:/freeboard/freeList";
+	}
 }
