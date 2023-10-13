@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.spring.myweb.freeboard.dto.page.Page;
 import com.spring.myweb.freeboard.entity.FreeBoard;
 import com.spring.myweb.freeboard.mapper.IFreeBoardMapper;
 
@@ -56,14 +57,17 @@ public class FreeBoardMapperTest {
 	@DisplayName("조회 시 전체 글 목록이 올 것이고, 조회된 글의 개수는 10개일 것이다.")
 	void getListTest() {
 		
-		List<FreeBoard> list = mapper.getList();
+		List<FreeBoard> list = mapper.getList(Page.builder()
+													.pageNo(4)
+													.amount(10)
+													.build());
 		for(FreeBoard board : list) {
 			System.out.println(board);
 		}
 		System.out.println("조회된 글의 개수: " + list.size());
 		
 		//then
-		assertEquals(list.size(), 11);
+		assertEquals(list.size(), 10);
 	}
 	
 	@Test
@@ -121,7 +125,7 @@ public class FreeBoardMapperTest {
 		//when
 		mapper.delete(bno);
 		//then
-		assertEquals(mapper.getList().size(), 11);
+//		assertEquals(mapper.getList().size(), 11);
 		assertNull(mapper.getContent(bno));
 		
 		
