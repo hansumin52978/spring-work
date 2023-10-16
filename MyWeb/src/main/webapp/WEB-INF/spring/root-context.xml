@@ -41,7 +41,7 @@
      <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
          <property name="dataSource" ref="ds" />
          <property name="configLocation" value="classpath:/mybatis-config.xml" />
-         <property name="mapperLocations" value="classpath:/mappers/*Mapper.xml" />     
+         <property name="mapperLocations" value="classpath:/mappers/*Mapper.xml" />
      </bean>
      
      
@@ -52,5 +52,6 @@
         그 인터페이스가 존재하는 패키지의 경로를 탐색하라는 태그입니다.
      -->
     <mybatis-spring:scan base-package="com.spring.myweb.freeboard.mapper"/>
+    <mybatis-spring:scan base-package="com.spring.myweb.user.mapper"/>
 		
 </beans>
