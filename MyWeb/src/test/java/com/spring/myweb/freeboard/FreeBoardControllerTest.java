@@ -90,7 +90,7 @@ public class FreeBoardControllerTest {
     	ModelAndView mv = mockMvc.perform(MockMvcRequestBuilders.get("/freeboard/content")
     											.param("bno", "1") // ""없이 3으로 넣으면 에러가 남
     															  // 이유는 문자열로 줘야하기 때문.
-    											//http://localhost:8181/myweb.freeboard/content?bno=3
+    											//http://localhost:8181${pageContext.request.contextPath}.freeboard/content?bno=3
     			).andReturn() // 결과를 받다.
     			.getModelAndView(); // ModelAndView를 리턴을 받음.
     	
