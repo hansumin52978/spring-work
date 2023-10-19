@@ -27,7 +27,7 @@ public class FreeListResponseDTO {
 	}
 	
 	static String makePrettierDateString(LocalDateTime regDate) {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy--MM--dd HH:mm");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		return dtf.format(regDate); // 같은 패키지 안에서는 가능한 디폴트 메서드를 사용함 (static)
 	}
 
