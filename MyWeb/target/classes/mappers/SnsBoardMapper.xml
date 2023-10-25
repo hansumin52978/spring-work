@@ -13,6 +13,7 @@
 	</insert>
 	
 	<select id="getList" resultType="sns">
+	<!-- 각 게시물당 좋아요 개수를 알려주는 SQL문 -->
 	SELECT tbl2.*,
 	(SELECT COUNT(*) FROM sns_like WHERE bno = tbl2.bno) AS like_cnt
 	FROM
@@ -55,6 +56,12 @@
 		DELETE FROM sns_like
 		WHERE bno = #{bno} AND user_id = #{userId}
 	</delete>
+	
+	<select id="likeList" resultType="int">
+		SELECT bno
+		FROM sns_like
+		WHERE user_id = #{userId}
+	</select>
 	
 
 </mapper>

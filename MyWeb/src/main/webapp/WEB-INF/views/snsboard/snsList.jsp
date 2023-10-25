@@ -341,7 +341,7 @@
 				document.getElementById('file').value = ''; //file input 비우기.
 				document.getElementById('content').value = ''; //글 영역 비우기.
 				document.querySelector('.fileDiv').style.display = 'none'; //미리보기 감추기.
-				getList(1, true);//글 목록 함수 호출.
+				getLikeList(1, true); //글 목록 함수 호출.
 			});
 		}
 
@@ -352,10 +352,39 @@
 		let reqStatus = false;
 
 		const $contentDiv = document.getElementById('contentDiv');
+		getLikeList(1, true);
 
-		getList(1, true);
+		//지금 게시판에 들어온 회원의 좋아요 게시물 목록을 받아오는 함수.
+		function getLikeList(page, reset) {
+			const userId = '${login}';
+			console.log('userId: ', userId);
+			/*
+			특정 데이터를 브라우저가 제공하는 공간에 저장할 수 있습니다.
+			lovalStorage, sessionStorage -> 수명에 차이점이 있습니다.
+			lovalStorage: 브라우저가 종료되더라도 데이터는 유지됩니다.
+						  브라우저 탭이 여러 개 존재하더라도 데이터가 공유됩니다.
+			sessionStorage: 브라우저가 종료되면 데이터가 소멸됩니다.
+						  브라우저 탭 별로 데이터가 저장되기 때문에 공유되지 않습니다.
+			*/
+			if(userId !== '') { //로그인을 했냐?
+				if(sessionStorage.getItem('likeList')) {
+					console.log('sessionStorage에 list 존재함!');
+					getList(page, reset, sessionStorage.getItem('likeList'));
+					return;
+				}
+				fetch('${pageContext.request.contextPath}/snsboard/likeList/' + userId)
+					.then(res => res.json())
+					.then(list => {
+						console.log('좋아요 글 목록 받아옴!: ', list);
+						sessionStorage.setItem('likeList', list);
+						getList(page, reset, list);
+					});
+			} else { //로그인을 안했냐?
+				getList(page, reset, null);
+			}
+		}
 
-		function getList(page, reset) {
+		function getList(page, reset, likeList) {
 			str = '';
 			isFinish = false;
 			console.log('page: ', page);
@@ -405,13 +434,22 @@
 						</div>
 						<div class="like-inner">
 							<!--좋아요-->
-							<img src="${pageContext.request.contextPath}/img/icon.jpg"> <span>777</span>
+							<img src="${pageContext.request.contextPath}/img/icon.jpg"> <span>` + board.likeCnt + `</span>
 						</div>
-						<div class="link-inner">
-							<a id="likeBtn" href="` + board.bno + `"><img src="${pageContext.request.contextPath}/img/like1.png" width="20px" height="20px" />&nbsp;좋아요</a>
-							<a data-bno="` + board.bno + `" id="comment" href="` + board.bno + `"><i class="glyphicon glyphicon-comment"></i>댓글달기</a>
-							<a id="delBtn" href="` + board.bno + `"><i class="glyphicon glyphicon-remove"></i>삭제하기</a>
-						</div>`;
+						<div class="link-inner">`;
+							if(likeList) {
+                                if(likeList.includes(board.bno)) {
+                                    str += `<a id="likeBtn" href="` + board.bno + `"><img src="${pageContext.request.contextPath}/img/like2.png" width="20px" height="20px" />&nbsp;좋아요</a>`;
+                                } else {
+                                    str += `<a id="likeBtn" href="` + board.bno + `"><img src="${pageContext.request.contextPath}/img/like1.png" width="20px" height="20px" />&nbsp;좋아요</a>`;
+                                }
+                            } else { // 로그인이 안되있다면 색칠이 당연히 안되있게 설정
+                                str += `<a id="likeBtn" href="` + board.bno + `"><img src="${pageContext.request.contextPath}/img/like1.png" width="20px" height="20px" />&nbsp;좋아요</a>`;
+                            }
+                            str += `
+                            <a data-bno="` + board.bno + `" id="comment" href="` + board.bno + `"><i class="glyphicon glyphicon-comment"></i>댓글달기</a>
+                            <a id="delBtn" href="` + board.bno + `"><i class="glyphicon glyphicon-remove"></i>삭제하기</a>
+                        </div>`;
 					} // for문 끝남
 
 					if(!reset) {
@@ -514,7 +552,7 @@
         마우스 움직임, 스크롤 이벤트 같은 짧은 주기로 자주 발생하는 경우에 사용하는 기법 (lodash 라이브러리를 이용해 구현)
         */
 		const handleScroll = _.throttle(() => {
-			console.log('throttle activate!');
+			// console.log('throttle activate!');
 			const scrollPosition = window.pageYOffset;
 			const height = document.body.offsetHeight;
 			const windowHeight = window.innerHeight;
@@ -522,7 +560,7 @@
 			if(isFinish) {
 				if(scrollPosition + windowHeight >= height * 0.9) {
 					console.log('next page call!');
-					getList(++page, false);
+					getLikeList(++page, false);
 				}
 			}
 		}, 1000);
