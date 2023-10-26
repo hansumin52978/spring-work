@@ -35,7 +35,35 @@
       <button type="button" id="sendBtn">요청!</button>
     </form>
 
-      <script language=javascript>
+    <button id="sendBtn2" type="button">위치정보 전송!</button>
+
+      <script>
+
+        //성공 시 실행할 콜백 함수
+        function success(position) {
+          console.log(position);
+          console.log('위도: ', position.coords.latitude);
+          console.log('경도: ', position.coords.longitude);
+        }
+
+        //실패 시 실행할 콜백 함수
+        function fail(error) {
+          alert('위치 정보를 얻는 데 실패했습니다. 위치 정보를 승인해 주세요.');
+          console.log(error);
+        }
+
+        //위치정보 전송! 버튼을 클릭시 발생하는 함수
+        document.getElementById('sendBtn2').onclick = function() {
+            navigator.geolocation.getCurrentPosition(success, fail);
+        }
+
+
+        // (function() {
+        //     //화면에 진입시 즉시 실행되게 하는 함수.
+
+        //     //getCurrentPosition(위치정보 승인 시 실행할 함수, 실패했을 시 실행할 함수) 
+        //     navigator.geolocation.getCurrentPosition();
+        // })();
 
         document.getElementById('sendBtn').onclick = function() {
             const $area1 = document.querySelector('select[name=h_area1]');
